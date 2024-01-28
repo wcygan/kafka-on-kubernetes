@@ -8,3 +8,7 @@ if [ "$current_directory" != "kafka-on-kubernetes" ]; then
     echo "Please run this from the root directory of the project (kafka-on-kubernetes)."
     exit 1
 fi
+
+echo "Undeploying the application..."
+kubectl delete -f kafka/deployment.yaml -n kafka
+kubectl delete -f kafka/topics/packet.yaml -n kafka
