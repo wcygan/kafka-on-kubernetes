@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package packet.v1;
+
+message Packet {
+  int64 number = 1;
+}
