@@ -11,4 +11,8 @@ fi
 
 echo "Deploying the application..."
 kubectl apply -f kafka/deployment.yaml -n kafka
-kubectl apply -f kafka/topics/packet.yaml -n kafka
+kubectl apply -f kafka/topics/*.yaml -n kafka
+
+echo "Waiting for Kafka to be ready..."
+kubectl wait kafka/example-cluster --for=condition=Ready --timeout=300s -n kafka
+echo "Kafka is ready!"

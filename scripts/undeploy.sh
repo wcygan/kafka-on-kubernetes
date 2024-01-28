@@ -11,4 +11,4 @@ fi
 
 echo "Undeploying the application..."
 kubectl delete -f kafka/deployment.yaml -n kafka
-kubectl delete -f kafka/topics/packet.yaml -n kafka
+kubectl delete -f kafka/topics/*.yaml -n kafka
