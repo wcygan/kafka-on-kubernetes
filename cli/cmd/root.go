@@ -19,6 +19,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(listTopicsCmd)
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.AddCommand(listTopicsCmd)
+	rootCmd.AddCommand(readAllCmd)
 }
