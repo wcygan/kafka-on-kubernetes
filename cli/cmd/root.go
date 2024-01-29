@@ -22,4 +22,5 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.AddCommand(listTopicsCmd)
 	rootCmd.AddCommand(readAllCmd)
+	rootCmd.AddCommand(rngCmd)
 }
