@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"github.com/segmentio/kafka-go"
-	packetv1 "github.com/wcygan/kafka-on-kubernetes/generated/go/packet/v1"
+	"github.com/wcygan/kafka-on-kubernetes/generated/go/packet/v1"
 	"log"
 	"time"
 )
