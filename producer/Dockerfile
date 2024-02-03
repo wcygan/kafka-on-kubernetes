@@ -11,8 +11,6 @@ WORKDIR /app/producer
 COPY --from=bufbuild /app .
 # Copy the rest of the Go source code
 COPY . ..
-# Copy the generated Go files
-COPY ../generated/go ./generated/go
 RUN CGO_ENABLED=0 GOOS=linux go build -o ../build/producer .
 
 # Final stage: Create the runtime image
