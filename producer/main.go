@@ -28,6 +28,8 @@ func main() {
 
 		if err != nil {
 			log.Fatal("failed to write messages:", err)
+		} else {
+			log.Println("Packet produced: ", packet.Number)
 		}
 	}
 }
