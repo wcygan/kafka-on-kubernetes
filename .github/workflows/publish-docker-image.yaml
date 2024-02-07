@@ -28,5 +28,5 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          file: ./producer/Dockerfile
+          file: producer/Dockerfile
           tags: wcygan/kafka-on-kubernetes-producer:latest
