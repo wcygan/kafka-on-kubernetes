@@ -18,3 +18,6 @@ echo "Kafka is ready!"
 
 echo "Creating kafka topics..."
 kubectl apply -f kafka/topics/*.yaml -n kafka
+
+echo "Deploying the producer..."
+kubectl apply -f producer/deployment.yaml

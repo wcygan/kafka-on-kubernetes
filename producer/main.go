@@ -6,6 +6,8 @@ import (
 	packetv1 "github.com/wcygan/kafka-on-kubernetes/generated/go/packet/v1"
 	"log"
 	"math/rand"
+	"net"
+	"time"
 )
 
 func main() {
@@ -13,6 +15,11 @@ func main() {
 		Addr:     kafka.TCP("example-cluster-kafka-bootstrap:9092"),
 		Topic:    "packet",
 		Balancer: &kafka.LeastBytes{},
+		Transport: &kafka.Transport{
+			Dial: (&net.Dialer{
+				Timeout: 10 * time.Second,
+			}).DialContext,
+		},
 	}
 
 	for {
