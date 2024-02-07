@@ -22,14 +22,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: List directory contents
-        run: ls -al
-      -
         name: Build and push the Server's image
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
           push: true
           file: ./producer/Dockerfile
-          context: "."
           tags: wcygan/kafka-on-kubernetes-producer:latest
