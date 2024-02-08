@@ -11,14 +11,17 @@ WORKDIR /app
 # Copy the generated files from the previous stage
 COPY --from=bufbuild /app/generated /app/generated
 
-# Copy the rest of the source code
-COPY . .
-
 # Adjust the WORKDIR to the specific directory where the main.go is located if it's not in the root
 WORKDIR /app/producer
 
-# Ensure all dependencies are downloaded
-RUN go mod tidy
+# Copy the go.mod and go.sum files
+COPY producer/go.mod producer/go.sum ./
+
+# Download all dependencies. They will be cached if the go.mod and the go.sum files are not changed
+RUN go mod download
+
+# Modify this COPY command to only copy the files from the host's producer folder to the container's producer folder
+COPY producer/ ./
 
 # Build the Go binary
 RUN CGO_ENABLED=0 GOOS=linux go build -o ../build/producer .
