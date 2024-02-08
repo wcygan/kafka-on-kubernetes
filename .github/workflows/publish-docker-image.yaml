@@ -33,3 +33,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: wcygan/kafka-on-kubernetes-producer:latest
+          cache-from: type=registry,ref=wcygan/kafka-on-kubernetes-producer:latest
+          cache-to: type=inline
