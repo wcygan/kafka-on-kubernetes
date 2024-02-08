@@ -11,7 +11,7 @@ local_resource(
   'compile',
   compile_cmd,
   deps=['./producer', './generated'],
-  dir='./producer'  # Set the working directory for the command
+  dir='./producer'
 )
 
 # Local resource to compile the protobuf files
@@ -26,7 +26,7 @@ docker_build_with_restart(
     'wcygan/kafka-on-kubernetes-producer',
     '.',
     dockerfile='producer/Dockerfile',
-    entrypoint='/app/build/producer',
+    entrypoint='/app/producer',
     ignore=['./scripts', '.gitignore'],
     live_update=[
         sync('./', '/app'),
@@ -34,4 +34,4 @@ docker_build_with_restart(
 )
 
 # Kubernetes resources
-k8s_yaml(['producer/Deployment.yaml', 'kafka/deployment.yaml', 'kafka/topics/packet.yaml'])
+k8s_yaml(['producer/Deployment.yaml', 'kafka/deployment.yaml'])
