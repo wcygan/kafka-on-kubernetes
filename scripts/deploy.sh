@@ -11,5 +11,7 @@ fi
 
 helm install kafka oci://registry-1.docker.io/bitnamicharts/kafka --version 26.8.4 -f kafka/values.yaml
 kubectl apply -f producer/deployment.yaml
+kubectl apply -f consumer/deployment.yaml
+kubectl apply -f consumer-2/deployment.yaml
 kubectl apply -f admin-dashboard.yaml
 ./scripts/token.sh

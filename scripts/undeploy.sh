@@ -11,5 +11,7 @@ fi
 
 echo "Undeploying the application..."
 kubectl delete -f producer/deployment.yaml
+kubectl delete -f consumer/deployment.yaml
+kubectl delete -f consumer-2/deployment.yaml
 helm delete kafka
 kubectl delete pod kafka-client --wait=false
