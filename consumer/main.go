@@ -1,8 +1,36 @@
 package main
 
-import packetv1 "github.com/wcygan/kafka-on-kubernetes/generated/go/packet/v1"
+import (
+	"context"
+	"github.com/segmentio/kafka-go"
+	packetv1 "github.com/wcygan/kafka-on-kubernetes/generated/go/packet/v1"
+	"google.golang.org/protobuf/proto"
+	"log"
+)
 
 func main() {
-	packet := packetv1.Packet{Number: 1}
-	println("Consuming packet: ", packet.Number)
+	r := kafka.NewReader(kafka.ReaderConfig{
+		Brokers: []string{
+			"kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092",
+			"kafka-controller-1.kafka-controller-headless.default.svc.cluster.local:9092",
+			"kafka-controller-2.kafka-controller-headless.default.svc.cluster.local:9092",
+		},
+		Topic: "packet",
+	})
+
+	defer r.Close()
+
+	for {
+		m, err := r.ReadMessage(context.Background())
+		if err != nil {
+			log.Println("failed to read message:", err)
+		}
+
+		var packet packetv1.Packet
+		if err := proto.Unmarshal(m.Value, &packet); err != nil {
+			log.Println("ERROR: failed to unmarshal message:", err)
+		}
+
+		log.Println("Consumed ", packet.GetNumber())
+	}
 }

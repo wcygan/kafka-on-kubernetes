@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Build and push the Server's image
+        name: Build and push the Producer's image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -34,4 +34,15 @@ jobs:
           push: true
           tags: wcygan/kafka-on-kubernetes-producer:latest
           cache-from: type=registry,ref=wcygan/kafka-on-kubernetes-producer:latest
+          cache-to: type=inline
+      -
+        name: Build and push the Consumer's image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./consumer/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: wcygan/kafka-on-kubernetes-consumer:latest
+          cache-from: type=registry,ref=wcygan/kafka-on-kubernetes-consumer:latest
           cache-to: type=inline

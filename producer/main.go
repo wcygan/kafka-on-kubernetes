@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/segmentio/kafka-go"
 	packetv1 "github.com/wcygan/kafka-on-kubernetes/generated/go/packet/v1"
+	"google.golang.org/protobuf/proto"
 	"log"
 	"math/rand"
 	"net"
@@ -27,21 +28,29 @@ func main() {
 		},
 	}
 
-	for {
-		packet := packetv1.Packet{Number: rand.Int63()}
-		log.Println("Producing packet: ", packet.Number)
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
 
-		err := w.WriteMessages(context.Background(),
+	for range ticker.C {
+		packet := packetv1.Packet{Number: rand.Int63()}
+
+		// Serialize the protobuf object to a byte slice
+		packetBytes, err := proto.Marshal(&packet)
+		if err != nil {
+			log.Fatal("failed to serialize packet:", err)
+		}
+
+		err = w.WriteMessages(context.Background(),
 			kafka.Message{
 				Key:   []byte("Key"),
-				Value: []byte(packet.String()),
+				Value: packetBytes,
 			},
 		)
 
 		if err != nil {
-			log.Fatal("failed to write messages:", err)
+			log.Println("failed to write messages:", err)
 		} else {
-			log.Println("Packet produced: ", packet.Number)
+			log.Println("Produced: ", packet.Number)
 		}
 	}
 }
