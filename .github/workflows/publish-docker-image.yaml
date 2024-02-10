@@ -46,3 +46,14 @@ jobs:
           tags: wcygan/kafka-on-kubernetes-consumer:latest
           cache-from: type=registry,ref=wcygan/kafka-on-kubernetes-consumer:latest
           cache-to: type=inline
+      -
+        name: Build and push the Consumer-2 image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./consumer-2/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: wcygan/kafka-on-kubernetes-consumer-2:latest
+          cache-from: type=registry,ref=wcygan/kafka-on-kubernetes-consumer-2:latest
+          cache-to: type=inline

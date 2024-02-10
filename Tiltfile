@@ -76,10 +76,36 @@ docker_build_with_restart(
     ],
 )
 
+# --------------------------------- Consumer 2 --------------------------------- #
+
+# Compile command for the Go consumer-2 application
+consumer_2_compile_cmd = 'CGO_ENABLED=0 GOOS=linux go build -o ../build/consumer-2 .'
+
+# Local resource to compile the Go consumer-2 application
+local_resource(
+  'consumer_2_compile',
+  consumer_2_compile_cmd,
+  deps=['./consumer-2', './generated'],
+  dir='./consumer-2'
+)
+
+# Docker build with restart for the Go consumer-2 application
+docker_build_with_restart(
+    'wcygan/kafka-on-kubernetes-consumer-2',
+    '.',
+    dockerfile='consumer-2/Dockerfile',
+    entrypoint='/app/consumer-2',
+    ignore=['./scripts', '.gitignore'],
+    live_update=[
+        sync('./', '/app'),
+    ],
+)
+
 # --------------------------------- Resources --------------------------------- #
 
 k8s_yaml([
   'producer/Deployment.yaml',
   'consumer/Deployment.yaml',
+  'consumer-2/Deployment.yaml',
   'admin-dashboard.yaml'
 ])

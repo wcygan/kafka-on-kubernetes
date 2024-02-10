@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-2
+  labels:
+    app: consumer-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer-2
+  template:
+    metadata:
+      labels:
+        app: consumer-2
+    spec:
+      containers:
+        - name: consumer-2
+          image: wcygan/kafka-on-kubernetes-consumer-2:latest
+          ports:
+            - containerPort: 9092
