@@ -1,4 +1,16 @@
 load('ext://restart_process', 'docker_build_with_restart')
+load('ext://helm_resource', 'helm_resource', 'helm_repo')
+helm_repo('bitnami', 'https://charts.bitnami.com/bitnami')
+
+helm_resource(
+  name='kafka',
+  chart='bitnami/kafka',
+  resource_deps=['bitnami'],
+  flags=[
+    '--values=./kafka/values.yaml',
+    '--version=26.8.4',
+  ]
+)
 
 # Compile command for the Go application
 compile_cmd = 'CGO_ENABLED=0 GOOS=linux go build -o ../build/producer .'
@@ -34,4 +46,4 @@ docker_build_with_restart(
 )
 
 # Kubernetes resources
-k8s_yaml(['producer/Deployment.yaml', 'kafka/deployment.yaml'])
+k8s_yaml(['producer/Deployment.yaml', 'admin-dashboard.yaml'])

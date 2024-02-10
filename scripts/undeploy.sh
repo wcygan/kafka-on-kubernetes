@@ -10,6 +10,5 @@ if [ "$current_directory" != "kafka-on-kubernetes" ]; then
 fi
 
 echo "Undeploying the application..."
-kubectl delete -f kafka/deployment.yaml -n kafka
-kubectl delete -f kafka/topics/*.yaml -n kafka
 kubectl delete -f producer/deployment.yaml
+helm delete example-kafka

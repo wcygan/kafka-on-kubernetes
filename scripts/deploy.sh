@@ -9,15 +9,7 @@ if [ "$current_directory" != "kafka-on-kubernetes" ]; then
     exit 1
 fi
 
-echo "Deploying the application..."
-kubectl apply -f kafka/deployment.yaml -n kafka
-
-echo "Waiting for Kafka to be ready..."
-kubectl wait kafka/example-cluster --for=condition=Ready --timeout=300s -n kafka
-echo "Kafka is ready!"
-
-echo "Creating kafka topics..."
-kubectl apply -f kafka/topics/*.yaml -n kafka
-
-echo "Deploying the producer..."
+helm install example-kafka oci://registry-1.docker.io/bitnamicharts/kafka --version 26.8.4 -f kafka/values.yaml
 kubectl apply -f producer/deployment.yaml
+kubectl apply -f admin-dashboard.yaml
+./scripts/token.sh

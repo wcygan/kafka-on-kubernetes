@@ -12,9 +12,14 @@ import (
 
 func main() {
 	w := &kafka.Writer{
-		Addr:     kafka.TCP("example-cluster-kafka-bootstrap:9092"),
-		Topic:    "packet",
-		Balancer: &kafka.LeastBytes{},
+		Addr: kafka.TCP(
+			"kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092",
+			"kafka-controller-1.kafka-controller-headless.default.svc.cluster.local:9092",
+			"kafka-controller-2.kafka-controller-headless.default.svc.cluster.local:9092",
+		),
+		Topic:                  "packet",
+		AllowAutoTopicCreation: true,
+		Balancer:               &kafka.LeastBytes{},
 		Transport: &kafka.Transport{
 			Dial: (&net.Dialer{
 				Timeout: 10 * time.Second,
